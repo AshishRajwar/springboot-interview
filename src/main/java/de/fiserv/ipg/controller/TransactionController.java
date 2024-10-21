@@ -4,14 +4,14 @@ import de.fiserv.ipg.entity.Transaction;
 import de.fiserv.ipg.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/transactions")
+@CrossOrigin(origins = "http://localhost:4200")
 public class TransactionController {
 
 	private final TransactionService transactionService;
@@ -23,6 +23,19 @@ public class TransactionController {
 
 	@GetMapping
 	public ResponseEntity<List<Transaction>> getAllTransactions() {
+		System.out.println("getTransactions");
 		return ResponseEntity.ok(transactionService.getAllTransactions());
+	}
+
+	@GetMapping("{id}")
+	public ResponseEntity<Optional<Transaction>> getTransactionsById(@PathVariable("id") Long id) {
+		System.out.println("getTransactionsById");
+		return ResponseEntity.ok(transactionService.getTransactionsById(id));
+	}
+
+	@PostMapping("")
+	public ResponseEntity<Transaction> addTransaction(@RequestBody Transaction transaction) {
+		System.out.println("addTransactionsById");
+		return ResponseEntity.ok(transactionService.addTransaction(transaction));
 	}
 }
