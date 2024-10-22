@@ -3,6 +3,7 @@ package de.fiserv.ipg.controller;
 import de.fiserv.ipg.entity.Transaction;
 import de.fiserv.ipg.service.TransactionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,6 +31,9 @@ public class TransactionController {
 	@GetMapping("{id}")
 	public ResponseEntity<Optional<Transaction>> getTransactionsById(@PathVariable("id") Long id) {
 		System.out.println("getTransactionsById");
+		if (id <= 0) {
+			throw new IllegalArgumentException("ID must be positive.");
+		}
 		return ResponseEntity.ok(transactionService.getTransactionsById(id));
 	}
 
@@ -38,4 +42,7 @@ public class TransactionController {
 		System.out.println("addTransactionsById");
 		return ResponseEntity.ok(transactionService.addTransaction(transaction));
 	}
+
+	// Handle IllegalArgumentException
+
 }
